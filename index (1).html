@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digitaler Schutzengel</title>
+<style>
+:root {
+  --site-primary: #176b55;
+  --site-on-primary: #ffffff;
+  --site-secondary: #e4f2eb;
+  --site-on-secondary: #183d32;
+  --site-background: #f5f8f5;
+  --site-on-background: #182a24;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); background: light-dark(#f5f8f5, #101b17); color: light-dark(#182a24, #edf5f0); line-height: 1.55; }
+#app { min-height: 100vh; background-color: var(--site-background); color: var(--site-on-background); overflow: hidden; }
+.hero { background: linear-gradient(90deg, rgba(12,45,35,.82), rgba(12,45,35,.45)), url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1800&q=85') center 45% / cover no-repeat; color: #ffffff; padding: calc(42px * var(--site-spacing-scale)) 22px calc(52px * var(--site-spacing-scale)); position: relative; }
+.hero-inner, main, footer { max-width: 1060px; margin: 0 auto; }
+.nav { display:flex; justify-content:space-between; align-items:center; gap:16px; max-width:1060px; margin:0 auto 42px; }
+.brand { font-weight:800; letter-spacing:-.03em; display:flex; gap:10px; align-items:center; }
+.brand-mark { width:38px;height:38px;border-radius:13px;background:#ffffff24;display:grid;place-items:center;font-size:22px; }
+.nav-note { font-size:14px; opacity:.88; }
+.hero-grid { display:grid; grid-template-columns: 1.25fr .75fr; align-items:center; gap:32px; }
+.eyebrow { text-transform:uppercase;letter-spacing:.13em;font-size:12px;font-weight:800;opacity:.8; }
+h1,h2,h3 { font-family:var(--site-font-heading); line-height:1.12; letter-spacing:-.035em; }
+h1 { font-size:clamp(38px, 6vw, 64px); margin:12px 0 18px; max-width:680px; }
+.hero p { font-size:18px;max-width:650px;opacity:.92; }
+.hero-card { border:1px solid #ffffff40; background:#ffffff12; border-radius:24px; padding:26px; }
+.hero-card .big-icon { font-size:56px; }
+.hero-card h3 { font-size:23px;margin:8px 0; }
+.hero-card p { font-size:15px;margin-bottom:0; }
+main { padding: 34px 22px 60px; }
+.section-head { display:flex; justify-content:space-between; align-items:end; gap:20px; margin: 12px 0 18px; }
+h2 { font-size:clamp(25px, 4vw, 34px); margin:0 0 8px; }
+.muted { color: light-dark(#587067, #a5bdb3); margin:0; }
+.cards { display:grid;grid-template-columns:repeat(3,1fr);gap:16px; }
+.card { background:light-dark(#ffffff, #1b2b24); border:1px solid light-dark(#dce8e0, #31483c); border-radius:calc(20px * var(--site-radius-scale)); padding:22px; box-shadow:0 5px 20px #143e2610; }
+.card-icon { width:48px;height:48px;border-radius:15px;background:var(--site-secondary);color:var(--site-on-secondary);display:grid;place-items:center;font-size:24px;margin-bottom:16px; }
+.card h3 { font-size:20px;margin:0 0 8px; }
+.card p { margin:0 0 16px;color:light-dark(#52685f, #b4c9bf);font-size:14px; }
+button { font:inherit; cursor:pointer; border:0; border-radius:12px; padding:11px 15px; font-weight:750; transition:transform .15s, opacity .15s; }
+button:hover { transform:translateY(-1px); }
+button:focus-visible, a:focus-visible { outline:3px solid #d5a82b;outline-offset:3px; }
+.btn-primary { background:var(--site-primary);color:var(--site-on-primary); }
+.btn-secondary { background:var(--site-secondary);color:var(--site-on-secondary); }
+.demo { margin-top:36px;display:grid;grid-template-columns:.8fr 1.2fr;gap:22px;align-items:start; }
+.demo-intro { padding:12px 0; }
+.demo-panel { background:light-dark(#ffffff,#1b2b24);border:1px solid light-dark(#dce8e0,#31483c);border-radius:22px;padding:24px; }
+.tabs { display:flex;gap:8px;flex-wrap:wrap;margin:18px 0; }
+.tab { background:light-dark(#edf3ef,#263b30);color:light-dark(#2d4b3e,#e2eee6); }
+.tab[aria-selected="true"] { background:var(--site-primary);color:var(--site-on-primary); }
+.message { border:1px solid light-dark(#dce5df,#3b5146);background:light-dark(#f8faf8,#14211a);border-radius:16px;padding:18px;margin:12px 0; }
+.message-top { display:flex;align-items:center;gap:10px;margin-bottom:10px;font-weight:750; }
+.avatar { width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--site-secondary);color:var(--site-on-secondary); }
+.message p { margin:8px 0; }
+.fake-link { color:#236cba;text-decoration:underline;overflow-wrap:anywhere; }
+.warning { border-left:4px solid #d99a18;background:light-dark(#fff6df,#332a15);padding:13px 15px;border-radius:0 10px 10px 0;margin:16px 0;color:light-dark(#563f0e,#f6e6bb); }
+.safe { border-left:4px solid #24815f;background:light-dark(#e7f6ed,#173126);padding:13px 15px;border-radius:0 10px 10px 0;margin:16px 0;color:light-dark(#174b36,#c9f1dc); }
+.quiz { margin-top:38px;background:var(--site-secondary);color:var(--site-on-secondary);border-radius:24px;padding:28px; }
+.quiz h2 { margin-bottom:8px; }
+.question { font-size:18px;font-weight:750;margin:20px 0 14px; }
+.answers { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+.answer { background:light-dark(#fff,#22382d);color:light-dark(#183d32,#edf5f0);text-align:left;border:2px solid transparent; }
+.answer:hover { border-color:var(--site-primary); }
+.answer.correct { border-color:#24815f;background:light-dark(#e2f7e9,#153627); }
+.answer.wrong { border-color:#c05b4d;background:light-dark(#fff0ed,#3a211e); }
+#quiz-feedback { margin-top:15px;font-weight:650;min-height:28px; }
+.quiz-bottom { display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap; }
+.progress { font-size:14px;opacity:.8; }
+.steps { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px; }
+.step { border-top:3px solid var(--site-primary);padding-top:14px; }
+.step strong { display:block;margin-bottom:6px; }
+footer { border-top:1px solid light-dark(#dce8e0,#31483c);padding:24px 22px 35px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:13px;color:light-dark(#587067,#a5bdb3); }
+.disclaimer { font-size:13px;opacity:.8;margin-top:16px; }
+.checker { margin-top:38px; background:light-dark(#ffffff,#1b2b24); border:1px solid light-dark(#dce8e0,#31483c); border-radius:24px; padding:26px; }
+.upload-zone { display:block; border:2px dashed light-dark(#9bb8a8,#527664); border-radius:16px; padding:22px; text-align:center; cursor:pointer; background:light-dark(#f5faf6,#14211a); }
+.upload-zone input { display:block; max-width:100%; margin:12px auto 0; }
+.preview-image { display:none; max-width:100%; max-height:340px; object-fit:contain; margin:18px auto 0; border-radius:12px; }
+.checker textarea { width:100%; min-height:120px; margin-top:14px; padding:13px; border:1px solid light-dark(#cbdacf,#496252); border-radius:12px; background:light-dark(#fff,#14211a); color:inherit; font:inherit; }
+.result { display:none; margin-top:18px; padding:17px; border-radius:14px; }
+.result.caution { display:block; border-left:4px solid #d99a18; background:light-dark(#fff6df,#332a15); color:light-dark(#563f0e,#f6e6bb); }
+.result.good { display:block; border-left:4px solid #24815f; background:light-dark(#e7f6ed,#173126); color:light-dark(#174b36,#c9f1dc); }
+@media(max-width:760px) { .hero-grid,.demo {grid-template-columns:1fr;} .hero-card {max-width:440px;} .cards {grid-template-columns:1fr;} .steps {grid-template-columns:1fr;} .nav {margin-bottom:28px;} .nav-note {display:none;} .answers {grid-template-columns:1fr;} .section-head {display:block;} }
+</style>
+</head>
+<body>
+<div id="app">
+<header class="hero">
+  <div class="nav"><div class="brand"><span class="brand-mark">🛡️</span><span>Digitaler Schutzengel</span></div><div class="nav-note">Ein Schulprojekt für mehr Sicherheit im Internet</div></div>
+  <div class="hero-inner hero-grid">
+    <div><div class="eyebrow">Gemeinsam sicher online</div><h1>Erst prüfen.<br>Dann klicken.</h1><p>Das Internet soll das Leben einfacher machen – nicht unsicherer. Lerne, verdächtige Nachrichten zu erkennen und dich vor Online-Betrug zu schützen.</p><button class="btn-secondary" onclick="document.getElementById('beispiele').scrollIntoView({behavior:'smooth'})">Beispiele entdecken ↓</button></div>
+    <aside class="hero-card"><div class="big-icon">💬🔍</div><h3>Eine Nachricht sieht echt aus?</h3><p>Betrüger können bekannte Firmen oder Behörden nachahmen. Kleine Warnzeichen helfen dir, einen Betrugsversuch zu erkennen.</p></aside>
+  </div>
+</header>
+<main>
+  <section><div class="section-head"><div><h2>Wobei hilft dir die Seite?</h2><p class="muted">Drei einfache Schritte für mehr Sicherheit.</p></div></div>
+    <div class="cards">
+      <article class="card"><div class="card-icon">📩</div><h3>Nachrichten prüfen</h3><p>Erkenne Druck, ungewöhnliche Absender und verdächtige Links in SMS und E-Mails.</p><button class="btn-primary" onclick="showExample('sms')">SMS-Beispiel ansehen</button></article>
+      <article class="card"><div class="card-icon">🔗</div><h3>Links hinterfragen</h3><p>Öffne keine Links, nur weil eine Nachricht dringend klingt. Prüfe die Adresse über einen sicheren Weg.</p><button class="btn-primary" onclick="showExample('link')">Link-Beispiel ansehen</button></article>
+      <article class="card"><div class="card-icon">🧠</div><h3>Wissen testen</h3><p>Mach das kurze Quiz und übe, typische Warnsignale in Ruhe zu erkennen.</p><button class="btn-primary" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Zum Quiz ↓</button></article>
+    </div>
+  </section>
+  <section class="demo" id="beispiele">
+    <div class="demo-intro"><div class="eyebrow" style="color:var(--site-primary)">Lernen durch Beispiele</div><h2>Würdest du dieser Nachricht vertrauen?</h2><p class="muted">Wähle ein Beispiel. Lies die Nachricht genau und schau dir danach die Erklärung an.</p><div class="warning"><strong>Merke:</strong> Wenn du unsicher bist, klicke nicht. Kontaktiere die Organisation über ihre offizielle Website oder eine bekannte Telefonnummer.</div></div>
+    <div class="demo-panel"><div class="tabs" role="tablist" aria-label="Nachrichtenbeispiele"><button class="tab" role="tab" aria-selected="true" onclick="showExample('sms')">Paket-SMS</button><button class="tab" role="tab" aria-selected="false" onclick="showExample('bank')">Bank-Nachricht</button><button class="tab" role="tab" aria-selected="false" onclick="showExample('link')">Gewinnspiel</button></div><div id="example-content"></div></div>
+  </section>
+  <section class="quiz" id="quiz"><div class="eyebrow">Mini-Quiz</div><h2>Würdest du es erkennen?</h2><p>Beantworte drei Fragen. Es geht ums Lernen, nicht um eine Note.</p><div id="quiz-content"></div><div class="quiz-bottom"><span class="progress" id="quiz-progress">Frage 1 von 3</span><button class="btn-primary" id="next-question" onclick="nextQuestion()" disabled>Weiter →</button></div></section>
+  <section class="checker" id="screenshot-check"><div class="eyebrow" style="color:var(--site-primary)">Neues Werkzeug · Prototyp</div><h2>Screenshot einer Nachricht prüfen</h2><p class="muted">Lade einen Screenshot hoch und füge den Nachrichtentext in das Feld ein. Diese Demo untersucht den eingegebenen Text auf typische Warnzeichen. Das Bild wird nicht automatisch per KI gelesen.</p><label class="upload-zone" for="screenshot-file"><strong>📷 Screenshot auswählen</strong><br><span class="muted">PNG, JPG oder andere Bilddatei</span><input id="screenshot-file" type="file" accept="image/*" onchange="previewScreenshot(event)"></label><img id="screenshot-preview" class="preview-image" alt="Vorschau des ausgewählten Screenshots"><label for="message-text"><strong>Nachrichtentext</strong></label><textarea id="message-text" placeholder="Kopiere den Text aus der SMS oder E-Mail hier hinein …"></textarea><button class="btn-primary" style="margin-top:12px" onclick="checkMessage()">Warnzeichen prüfen</button><div id="scan-result" class="result" role="status" aria-live="polite"></div><p class="disclaimer">Datenschutz: Die Prüfung läuft in diesem Prototyp direkt in deinem Browser; der Screenshot wird nicht hochgeladen. Das Ergebnis ist nur eine grobe Einschätzung und kein sicherer Nachweis. Teile keine Passwörter, PINs, Bestätigungscodes oder privaten Daten.</p></section>
+  <section style="margin-top:42px"><h2>Die 3 goldenen Regeln</h2><div class="steps"><div class="step"><strong>1. Nicht unter Druck setzen lassen</strong><span>Dringende Drohungen und kurze Fristen sind häufige Tricks.</span></div><div class="step"><strong>2. Separat überprüfen</strong><span>Öffne die offizielle App oder gib die bekannte Website selbst ein.</span></div><div class="step"><strong>3. Niemals Daten teilen</strong><span>Gib keine Passwörter, PINs oder Bestätigungscodes über einen Nachrichtenlink ein.</span></div></div><p class="disclaimer">Diese Seite ist ein Lern-Prototyp. Sie sammelt keine persönlichen Daten und ersetzt keine Beratung durch Bank, Polizei oder offizielle Stellen. Bei einem möglichen Betrug kontaktiere die betroffene Organisation direkt über einen bekannten, offiziellen Kontaktweg.</p></section>
+</main>
+<footer><span>🛡️ Digitaler Schutzengel · Schulprojekt</span><span>Aufklärung statt Angst – gemeinsam sicherer online.</span></footer>
+</div>
+<script>
+const examples = {
+ sms: {title:'Unbekannter Paketdienst',sender:'Paket-Service',time:'Heute, 09:41',text:'Ihr Paket konnte nicht zugestellt werden. Bezahlen Sie jetzt 2.95 CHF, sonst wird die Sendung zurückgeschickt.',link:'paket-verfolgung-beispiel.invalid/pay',warning:['Du sollst schnell handeln.','Eine zusätzliche Zahlung wird verlangt.','Der Link führt nicht erkennbar auf eine offizielle Domain.'],tip:'Öffne die offizielle Website oder App des Paketdienstes selbst und prüfe dort die Sendungsnummer. Die hier gezeigte Adresse ist ein erfundenes Beispiel.'},
+ bank: {title:'Angebliche Bank-Warnung',sender:'Sicherheits-Team',time:'Heute, 11:08',text:'Ihr Konto wird in 30 Minuten gesperrt. Bestätigen Sie Ihre Identität sofort über diesen Link.',link:'konto-sicherheit-beispiel.invalid/verify',warning:['Drohung mit Kontosperrung und Zeitdruck.','Allgemeine Anrede statt klarer persönlicher Zuordnung.','Ein Link fordert zur Bestätigung sensibler Daten auf.'],tip:'Klicke nicht auf den Link. Öffne die offizielle Banking-App selbst oder rufe die Bank über eine bekannte Nummer an. Teile niemals PINs oder Bestätigungscodes.'},
+ link: {title:'Unerwarteter Gewinn',sender:'Gewinn-Team',time:'Gestern, 18:22',text:'Gratulation! Sie haben ein neues Smartphone gewonnen. Zahlen Sie nur die Versandkosten, um den Preis zu erhalten.',link:'gratis-gewinn-beispiel.invalid/claim',warning:['Du hast möglicherweise an keinem Wettbewerb teilgenommen.','Für einen angeblichen Gewinn wird Geld verlangt.','Absender und Website sind nicht überprüft.'],tip:'Sei besonders vorsichtig bei unerwarteten Gewinnen. Prüfe den Wettbewerb direkt beim offiziellen Veranstalter und gib keine Zahlungsdaten ein.'}
+};
+function showExample(key){const e=examples[key];document.querySelectorAll('.tab').forEach(b=>{b.setAttribute('aria-selected',String(b.textContent.toLowerCase().includes(key==='sms'?'paket':key==='bank'?'bank':'gewinn')))});document.getElementById('example-content').innerHTML=`<div class="message"><div class="message-top"><div class="avatar">✉️</div><div>${e.sender}<div style="font-size:12px;font-weight:400;opacity:.65">${e.time}</div></div></div><p><strong>${e.title}</strong></p><p>${e.text}</p><p class="fake-link">${e.link}</p></div><div class="warning"><strong>Warnsignale</strong><ul>${e.warning.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="safe"><strong>Was du tun kannst</strong><p style="margin-bottom:0">${e.tip}</p></div>`;}
+const questions=[
+ {q:'Du erhältst eine SMS: „Dein Bankkonto wird in 10 Minuten gesperrt. Klicke hier!“ Was ist am sichersten?',a:['Sofort auf den Link klicken.','Die Bank-App selbst öffnen oder die Bank über eine bekannte Nummer kontaktieren.'],correct:1,why:'Richtig! Zeitdruck ist ein Warnsignal. Prüfe die Nachricht über einen unabhängigen, offiziellen Kontaktweg.'},
+ {q:'Eine unbekannte Person fragt nach deinem Passwort oder SMS-Bestätigungscode. Was machst du?',a:['Den Code schicken, damit das Problem gelöst wird.','Nichts davon teilen und die Nachricht ignorieren bzw. melden.'],correct:1,why:'Genau. Passwörter, PINs und Bestätigungscodes gehören nur dir.'},
+ {q:'Du bist nicht sicher, ob ein Link echt ist. Was ist die beste Reaktion?',a:['Nicht klicken und die offizielle Website selbst aufrufen.','Klicken, solange die Nachricht ein Logo enthält.'],correct:0,why:'Richtig! Logos können kopiert werden. Öffne die bekannte offizielle Website selbst.'}
+];
+let qIndex=0, score=0, answered=false;
+function renderQuestion(){answered=false;const q=questions[qIndex];document.getElementById('quiz-content').innerHTML=`<div class="question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answerQuestion(${i})">${a}</button>`).join('')}</div><div id="quiz-feedback" aria-live="polite"></div>`;document.getElementById('quiz-progress').textContent=`Frage ${qIndex+1} von ${questions.length}`;document.getElementById('next-question').disabled=true;document.getElementById('next-question').textContent=qIndex===questions.length-1?'Ergebnis ansehen ✓':'Weiter →';}
+function answerQuestion(i){if(answered)return;answered=true;const q=questions[qIndex];if(i===q.correct)score++;document.querySelectorAll('.answer').forEach((b,j)=>{b.disabled=true;if(j===q.correct)b.classList.add('correct');else if(j===i)b.classList.add('wrong')});document.getElementById('quiz-feedback').textContent=(i===q.correct?'✅ Richtig! ':'💡 Noch nicht ganz. ')+q.why;document.getElementById('next-question').disabled=false;}
+function nextQuestion(){if(!answered)return;if(qIndex<questions.length-1){qIndex++;renderQuestion();}else{document.getElementById('quiz-content').innerHTML=`<div class="question">Du hast ${score} von ${questions.length} Fragen richtig beantwortet.</div><p>${score===3?'Stark! Du kennst die wichtigsten Regeln.':score===2?'Guter Start! Lies die Erklärungen nochmals durch und probiere es erneut.':'Übung hilft. Schau dir die drei goldenen Regeln an und versuche es nochmals.'}</p><button class="btn-secondary" onclick="restartQuiz()">Quiz wiederholen ↻</button>`;document.getElementById('quiz-progress').textContent='Abgeschlossen';document.getElementById('next-question').disabled=true;document.getElementById('next-question').textContent='Fertig';}}
+function restartQuiz(){qIndex=0;score=0;renderQuestion();}
+function previewScreenshot(event){const file=event.target.files&&event.target.files[0];const img=document.getElementById('screenshot-preview');if(!file){img.style.display='none';img.removeAttribute('src');return;}if(!file.type.startsWith('image/')){alert('Bitte wähle eine Bilddatei aus.');event.target.value='';return;}const reader=new FileReader();reader.onload=()=>{img.src=reader.result;img.style.display='block';};reader.readAsDataURL(file);}
+function checkMessage(){const text=document.getElementById('message-text').value.trim();const result=document.getElementById('scan-result');if(!text){result.className='result caution';result.innerHTML='<strong>Bitte gib zuerst den Nachrichtentext ein.</strong><p>Dieser Prototyp kann den Text im Screenshot noch nicht automatisch erkennen. Kopiere den Text aus dem Bild hier hinein, um ihn zu prüfen.</p>';return;}const checks=[{label:'Zeitdruck oder Drohung',re:/sofort|dringend|innerhalb von \d+|in \d+ minuten|wird gesperrt|letzte warnung|heute noch/i},{label:'Geld oder Gebühr verlangt',re:/bezahlen|zahlung|gebühr|versandkosten|chf|franken|überweisen/i},{label:'Link oder Aufforderung zum Anklicken',re:/https?:\/\/|www\.|klicken sie|klicke hier|link öffnen|bestätigen sie/i},{label:'Passwort oder sensible Daten verlangt',re:/passwort|pin|bestätigungscode|kreditkarte|bankdaten|identität bestätigen/i},{label:'Unerwarteter Gewinn',re:/gewonnen|gewinn|gratulation|preis erhalten|gratis/i}];const hits=checks.filter(c=>c.re.test(text));result.className='result '+(hits.length?'caution':'good');if(hits.length){result.innerHTML='<strong>⚠️ Vorsicht: mögliche Warnzeichen gefunden</strong><p>Der Text enthält Hinweise, die bei Betrugsnachrichten vorkommen können:</p><ul>'+hits.map(h=>'<li>'+h.label+'</li>').join('')+'</ul><p>Das beweist nicht, dass es ein Scam ist. Klicke nicht auf den Link und prüfe die Sache über die offizielle App, Website oder eine bekannte Telefonnummer.</p>';}else{result.innerHTML='<strong>🟢 Keine typischen Warnwörter erkannt</strong><p>Das bedeutet <strong>nicht</strong>, dass die Nachricht sicher ist. Betrugsnachrichten können sehr echt wirken. Prüfe Absender und Webadresse unabhängig und gib keine vertraulichen Daten preis.</p>';} }
+showExample('sms');renderQuestion();
+</script>
+</body>
+</html>
